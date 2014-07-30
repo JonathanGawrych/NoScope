@@ -1,0 +1,11 @@
+{
+  "name": "NoScope",
+  "version": "0.1.0",
+  "main": "no-scope.js",
+  "ignore": [
+    ".*"
+  ],
+  "dependencies": {
+    "angular": "^1"
+  }
+}
