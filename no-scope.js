@@ -1,5 +1,5 @@
 /**
-* @license NoScope v0.1.0
+* @license NoScope v0.1.1
 * Copyright (c) 2014 Jonathan Gawrych
 * License: MIT
 */
@@ -8,19 +8,6 @@
 
 (function (window, document, undefined) {
 	'use strict';
-
-	if (typeof angular === 'undefined') {
-		throw new Error('Angular is not defined');
-	}
-
-	var NoScope = angular.module('NoScope', []);
-	NoScope.constant('NoScope-version', {
-		full: '0.1.0',
-		major: 0,
-		minor: 1,
-		dot:   0,
-		codeName: 'cold-bore'
-	});
 
 	function descriptor(varName) {
 		return '", {' +
@@ -31,15 +18,30 @@
 		       '});';
 	}
 
-	NoScope.constant('NoScope', function NoScope(scopeName, varNames) {
-		var binders = '';
+	window.noScope = function noScope(scopeName, varNames) {
 		var defineFor = 'Object.defineProperty(' + scopeName + ', "';
 
+		var binders = '';
 		for (var i = 0; i < varNames.length; i++) {
 			binders += defineFor + varNames[i] + descriptor(varNames[i]);
 		}
 		return binders;
-	});
+	};
+
+	window.noScope.version = {
+		full: '0.1.1',
+		major: 0,
+		minor: 1,
+		dot:   1,
+		codeName: 'unlimited-targets'
+	};
+
+	if (angular) {
+		// if angular is defined, define an optional module if they rather not use global variables
+		var NoScope = angular.module('NoScope', []);
+		NoScope.constant('noScope-version', window.noScope.version);
+		NoScope.constant('noScope', window.noScope);
+	}
 
 
 })(window, document);
